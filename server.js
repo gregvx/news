@@ -124,6 +124,6 @@ app.post("/articles/:id", function(req, res) {
 });
 
 // Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+app.listen(process.env.PORT || PORT, function() {
+  console.log("App running on port unknown but maybe:" + PORT + "!");
 });
