@@ -29,7 +29,6 @@ app.use(express.static("public"));
 
 
 // Connect to the Mongo DB
-// mongodb://heroku_cg1g8k96:heroku_cg1g8k96@ds113845.mlab.com:13845/heroku_cg1g8k96
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI);
 // mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
@@ -121,6 +120,15 @@ app.post("/articles/:id", function(req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
+});
+
+// Route for deleting all Articles from the db
+app.get("/clear", function(req, res) {
+  // Delete every document in the Articles collection
+  console.log("Time to delete all the articles from the db.");
+  db.Article.deleteMany({}).then().catch();
+  // Send a message to the client
+  res.send("Clear Complete");
 });
 
 // Start the server

@@ -1,5 +1,55 @@
+$(document).ready(function () {
+  // Setting a reference to the article-container div where all the dynamic content will go
+  // Adding event listeners to any dynamically generated "save articles"
+  // and "scrape new article" buttons
+  var articleContainer = $(".article-container");
+  // $(document).on("click", ".btn.save", handleArticleSave);
+  // $(document).on("click", ".scrape-new", handleArticleScrape);
+  $(".clear").on("click", handleArticleClear);
+  $(".load").on("click", handleArticleLoad);
+
+  // function initPage() {
+  //   // Run an AJAX request for any unsaved headlines
+  //   $.get("/api/headlines?saved=false").then(function(data) {
+  //     articleContainer.empty();
+  //     // If we have headlines, render them to the page
+  //     if (data && data.length) {
+  //       renderArticles(data);
+  //     } else {
+  //       // Otherwise render a message explaining we have no articles
+  //       renderEmpty();
+  //     }
+  //   });
+  // }
+
+  function handleArticleClear() {
+    $.get("clear").then(function() {
+      articleContainer.empty();
+      // initPage();
+    });
+  }
+
+  function handleArticleLoad() {
+    $.get("scrape").then(function() {
+      articleContainer.empty();
+      initPage();
+    });
+  }
+
+  function initPage() {
+    $.getJSON("/articles", function (data) {
+      // For each one
+      for (var i = 0; i < data.length; i++) {
+        // Display the apropos information on the page
+        $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      }
+    });
+  }
+
+});
+
 // Grab the articles as a json
-$.getJSON("/articles", function(data) {
+$.getJSON("/articles", function (data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
@@ -8,9 +58,12 @@ $.getJSON("/articles", function(data) {
 });
 
 
+
+
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+$(document).on("click", "p", function () {
   // Empty the notes from the note section
+  console.log("p tage clicked.");
   $("#notes").empty();
   // Save the id from the p tag
   var thisId = $(this).attr("data-id");
@@ -21,7 +74,7 @@ $(document).on("click", "p", function() {
     url: "/articles/" + thisId
   })
     // With that done, add the note information to the page
-    .then(function(data) {
+    .then(function (data) {
       console.log(data);
       // The title of the article
       $("#notes").append("<h2>" + data.title + "</h2>");
@@ -42,8 +95,10 @@ $(document).on("click", "p", function() {
     });
 });
 
+
+
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", "#savenote", function () {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
@@ -59,7 +114,7 @@ $(document).on("click", "#savenote", function() {
     }
   })
     // With that done
-    .then(function(data) {
+    .then(function (data) {
       // Log the response
       console.log(data);
       // Empty the notes section
@@ -70,3 +125,5 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+
