@@ -15,12 +15,23 @@
       #articles {
         display: inline-block;
         overflow: auto;
-        width: 60%;
+        width: 80%;
         height: 700px;
+      }
+      .article-row {
+        background-color: lavender;
+        margin:5px;
+      }
+      .note-row {
+        background-color: lightyellow;
+        margin:5px;
+      }
+      .button-box {
+        padding-top: 10px;
       }
       #notes {
         float: right;
-        width: 30%;
+        width: 10%;
       }
       textarea, input {
         display: block;
@@ -43,6 +54,8 @@
       <a class="btn btn-danger load">Get New Articles</a>
       <!-- button to delete articles in db -->
       <a class="btn btn-danger clear">Delete Saved Articles</a>
+      <!-- button to delete notes in db -->
+      <a class="btn btn-danger clearNotes">Delete Saved Notes</a>
     </div>
     <div id="wrapper">
       <h1>Article Scraper</h1>
