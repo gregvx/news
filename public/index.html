@@ -7,7 +7,7 @@
     <style>
       body { background-color: #F2F6D0 }
       #wrapper {
-        width: 960px;
+        min-width: 600px;
         margin-left: auto;
         margin-right: auto;
         padding-top: 5%;
@@ -15,8 +15,8 @@
       #articles {
         display: inline-block;
         overflow: auto;
-        width: 80%;
-        height: 700px;
+        width: 100%;
+        /* height: 700px; */
       }
       .article-row {
         background-color: lavender;
@@ -24,27 +24,38 @@
       }
       .note-row {
         background-color: lightyellow;
-        margin:5px;
+        margin: 5px 5px 5px 20px;
+      }
+      .noteAddition-row {
+        background-color: lightyellow;
+        margin: 5px 5px 5px 20px;
+        min-height: 50px;
+      }
+      .noteAddition-row p {
+        margin-top: 2px;
+        margin-bottom: 0px;
+      }
+      .noteAddition-row textarea {
+        margin-top: 5px;
+      }
+      .noteAddition-row .btn-warning {
+        color: #444;
       }
       .button-box {
         padding-top: 10px;
       }
-      #notes {
-        float: right;
-        width: 10%;
-      }
       textarea, input {
-        display: block;
+        display: inline-block;
         width: 100%;
         background-color: #FCF5C7;
       }
       input {
-        height: 36px;
-        font-size: 24px;
+        height: 20px;
+        font-size: 14px;
       }
       textarea {
-        height: 200px;
-        font-size: 18px;
+        height: 40px;
+        font-size: 14px;
       }
     </style>
   </head>
@@ -60,7 +71,6 @@
     <div id="wrapper">
       <h1>Article Scraper</h1>
       <div id="articles" class="article-container"></div>
-      <div id="notes"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="app.js"></script>

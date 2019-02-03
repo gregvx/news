@@ -79,11 +79,12 @@ function initPage() {
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
       $("#articles").append(
-        "<div class='row article-row'>" +
-          "<div class='col col-md-8'>" +
-          "<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>" +
+        "<div class='row article-row " + data[i]._id + "'>" +
+          "<div class='col col-sm-9'>" +
+            "<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" +
+            "<a href='" + data[i].link + "'>" + data[i].link + "</p>" +
           "</div>" +
-          "<div class='col col-md-4 button-box'>" +
+          "<div class='col col-sm-3 button-box'>" +
           "<a data-id='" + data[i]._id + "' " + "class='btn btn-warning btn-sm delete-article'>Delete Article</a>" +
           "<a data-id='" + data[i]._id + "' " + "class='btn btn-info btn-sm add-note'>Add Comment</a>" +
           "</div>" +
@@ -92,10 +93,10 @@ function initPage() {
       for (var j=0; j<data[i].notes.length; j++) {
         $("#articles").append(
           "<div class='row note-row'>" +
-            "<div class='col col-md-8'>" +
+            "<div class='col col-sm-9'>" +
             "<p data-id='" + data[i].notes[j]._id + "'>" + data[i].notes[j].title + "<br />" + data[i].notes[j].body + "</p>" +
             "</div>" +
-            "<div class='col col-md-4 button-box'>" +
+            "<div class='col col-sm-3 button-box'>" +
             "<a data-id='" + data[i].notes[j]._id + "' data-articleId='" + data[i]._id + "' " + "class='btn btn-warning btn-sm delete-note'>Delete Note</a>" +
             "</div>" +
           "</div>"
@@ -112,12 +113,9 @@ function initPage() {
 
 // Whenever someone clicks add comment button
 function handleAddNote() {
-  // Empty the notes from the note section
-  // console.log("p tag clicked.");
-  $("#notes").empty();
   // Save the id from the add comment button
   var thisId = $(this).attr("data-id");
-
+  
   // Now make an ajax call for the Article
   $.ajax({
     method: "GET",
@@ -126,22 +124,28 @@ function handleAddNote() {
     // With that done, add the note information to the page
     .then(function (data) {
       console.log(data);
-      // The title of the article
-      $("#notes").append("<h2>" + data.title + "</h2>");
-      // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
-      // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-      // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      console.log(thisId);
+      $("." + thisId).after("<div class='row noteAddition-row'>" +
+        "<div class='col col-sm-3'>" +
+          "<p>Comment Heading</p><input id='titleinput' name='title' >" +
+        "</div>" +
+        "<div class='col col-sm-6'>" +
+          "<textarea id='bodyinput' name='body' placeholder='Comments go here...'></textarea>" +
+        "</div>" +
+        "<div class='col col-sm-3 button-box'>" +
+          // "class='btn btn-warning btn-sm delete-note'>" +
+          "<button data-id='" + data._id + "' id='savenote' class='btn btn-warning btn-sm'>Save Note</button>" +
+        "</div>" +
+      "</div>");
+      // // The title of the article
+      // $("#notes").append("<h2>" + data.title + "</h2>");
+      // // An input to enter a new title
+      // $("#notes").append("<input id='titleinput' name='title' >");
+      // // A textarea to add a new note body
+      // $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+      // // A button to submit a new note, with the id of the article saved to it
+      // $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
-      // // If there's a note in the article
-      // if (data.note) {
-      //   // Place the title of the note in the title input
-      //   $("#titleinput").val(data.note.title);
-      //   // Place the body of the note in the body textarea
-      //   $("#bodyinput").val(data.note.body);
-      // }
     });
 };
 
@@ -168,8 +172,6 @@ $(document).on("click", "#savenote", function () {
     .then(function (data) {
       // Log the response
       console.log(data);
-      // Empty the notes section
-      $("#notes").empty();
       emptyArticles();
       initPage();
     });
