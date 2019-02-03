@@ -5,7 +5,12 @@
     <title>Scraping With Mongoose</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css"/>
     <style>
-      body { background-color: #F2F6D0 }
+      body { background-color: azure }
+      .title-row {
+        text-align: center;
+        margin: 5px 10px 5px 10px;
+        width: 100%;
+      }
       #wrapper {
         min-width: 600px;
         margin-left: auto;
@@ -27,7 +32,7 @@
         margin: 5px 5px 5px 20px;
       }
       .noteAddition-row {
-        background-color: lightyellow;
+        background-color: lightsalmon;
         margin: 5px 5px 5px 20px;
         min-height: 50px;
       }
@@ -60,7 +65,10 @@
     </style>
   </head>
   <body>
-    <div class="row">
+    <div class="row title-row">
+      <h2>Use the following three buttons to test functionality:</h2>
+    </div>
+    <div class="row title-row">
       <!-- button to get articles to db -->
       <a class="btn btn-danger load">Get New Articles</a>
       <!-- button to delete articles in db -->
