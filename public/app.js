@@ -35,14 +35,16 @@ $(document).ready(function () {
   }
 
   function handleArticleDelete() {
-    // console.log("handle article delete method being fired.");
+    console.log("handle article delete method being fired.");
     //figure out the id of the article to delete
     var thisId = $(this).attr("data-id");
-    // console.log("New method; time to delete the article of id: " + thisId);
+    console.log("New method; time to delete the article of id: " + thisId);
     $.get("deleteArticle/" + thisId).then(function() {
       articleContainer.empty();
     }).then(function() {
       initPage();
+    }).then(function() {
+      location.reload(true);
     });
   }
 
