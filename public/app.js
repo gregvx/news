@@ -10,64 +10,71 @@ $(document).ready(function () {
   $(".load").on("click", handleArticleLoad);
   $(".delete-article").on("click", handleArticleDelete);
   $(".delete-note").on("click", handleNoteDelete);
-
-
-  function handleArticleClear() {
-    $.get("clear").then(function() {
-      articleContainer.empty();
-      // initPage();
-    });
-  }
-
-  function handleNoteClear() {
-    $.get("clearNotes").then(function() {
-      articleContainer.empty();
-      initPage();
-    });
-  }
-
-  function handleArticleLoad() {
-    $.get("scrape").then(function() {
-      articleContainer.empty();
-    }).then(function() {
-      initPage();
-    });
-  }
-
-  function handleArticleDelete() {
-    console.log("handle article delete method being fired.");
-    //figure out the id of the article to delete
-    var thisId = $(this).attr("data-id");
-    console.log("New method; time to delete the article of id: " + thisId);
-    $.get("deleteArticle/" + thisId).then(function() {
-      articleContainer.empty();
-    }).then(function() {
-      initPage();
-    }).then(function() {
-      location.reload(true);
-    });
-  }
-
-  function handleNoteDelete() {
-    // console.log("handle note delete method being fired.");
-    //figure out the id of the note to delete
-    var thisId = $(this).attr("data-id");
-    var articleId = $(this).attr("data-articleId");
-    // console.log("New method; time to delete the note of id: " + thisId);
-    $.get("deleteNote/" + thisId + "&" + articleId).then(function() {
-      articleContainer.empty();
-    }).then(function() {
-      initPage();
-    });
-  }
+  $(".add-note").on("click", handleAddNote);
 
 });
 
-
+var articleContainer = $(".article-container");
 initPage();
+
+function handleArticleClear() {
+  $.get("clear").then(function() {
+    articleContainer.empty();
+    // initPage();
+  });
+}
+
+function handleNoteClear() {
+  $.get("clearNotes").then(function() {
+    articleContainer.empty();
+    initPage();
+  });
+}
+
+function handleArticleLoad() {
+  $.get("scrape").then(function() {
+    articleContainer.empty();
+  }).then(function() {
+    initPage();
+  });
+}
+
+function handleArticleDelete() {
+  // alert("you clicked the delete button.");
+  // console.log("handle article delete method being fired.");
+  //figure out the id of the article to delete
+  var thisId = $(this).attr("data-id");
+  // console.log("New method; time to delete the article of id: " + thisId);
+  $.get("deleteArticle/" + thisId).then(function() {
+    articleContainer.empty();
+  }).then(function() {
+    initPage();
+  }).then(function() {
+    location.reload(true);
+  });
+}
+
+function handleNoteDelete() {
+  // console.log("handle note delete method being fired.");
+  //figure out the id of the note to delete
+  var thisId = $(this).attr("data-id");
+  var articleId = $(this).attr("data-articleId");
+  // console.log("New method; time to delete the note of id: " + thisId);
+  $.get("deleteNote/" + thisId + "&" + articleId).then(function() {
+    articleContainer.empty();
+  }).then(function() {
+    initPage();
+  });
+}
+
+function emptyArticles () {
+  var articleContainer = $(".article-container");
+  articleContainer.empty();
+}
 
 function initPage() {
   $.getJSON("/articles", function (data) {
+    // alert("the page should now reload...");
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
@@ -78,7 +85,7 @@ function initPage() {
           "</div>" +
           "<div class='col col-md-4 button-box'>" +
           "<a data-id='" + data[i]._id + "' " + "class='btn btn-warning btn-sm delete-article'>Delete Article</a>" +
-          "<a class='btn btn-info btn-sm add-note'>Add Comment</a>" +
+          "<a data-id='" + data[i]._id + "' " + "class='btn btn-info btn-sm add-note'>Add Comment</a>" +
           "</div>" +
         "</div>"
       );
@@ -95,17 +102,20 @@ function initPage() {
         );
       }
     }
+    $(".delete-article").on("click", handleArticleDelete);
+    $(".delete-note").on("click", handleNoteDelete);
+    $(".add-note").on("click", handleAddNote);
   });
 }
 
 
 
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function () {
+// Whenever someone clicks add comment button
+function handleAddNote() {
   // Empty the notes from the note section
-  console.log("p tage clicked.");
+  // console.log("p tag clicked.");
   $("#notes").empty();
-  // Save the id from the p tag
+  // Save the id from the add comment button
   var thisId = $(this).attr("data-id");
 
   // Now make an ajax call for the Article
@@ -133,7 +143,7 @@ $(document).on("click", "p", function () {
       //   $("#bodyinput").val(data.note.body);
       // }
     });
-});
+};
 
 
 
@@ -160,6 +170,8 @@ $(document).on("click", "#savenote", function () {
       console.log(data);
       // Empty the notes section
       $("#notes").empty();
+      emptyArticles();
+      initPage();
     });
 
   // Also, remove the values entered in the input and textarea for note entry

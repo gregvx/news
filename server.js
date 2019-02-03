@@ -127,6 +127,7 @@ app.post("/addNoteToArticle/:id", function (req, res) {
       .catch(function(err) {
         res.json(err);
       });
+      res.json(dbNote);
     })
     // .then(function (dbNote) {
     //   // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
