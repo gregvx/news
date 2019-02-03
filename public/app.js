@@ -9,20 +9,8 @@ $(document).ready(function () {
   $(".clearNotes").on("click", handleNoteClear);
   $(".load").on("click", handleArticleLoad);
   $(".delete-article").on("click", handleArticleDelete);
+  $(".delete-note").on("click", handleNoteDelete);
 
-  // function initPage() {
-  //   // Run an AJAX request for any unsaved headlines
-  //   $.get("/api/headlines?saved=false").then(function(data) {
-  //     articleContainer.empty();
-  //     // If we have headlines, render them to the page
-  //     if (data && data.length) {
-  //       renderArticles(data);
-  //     } else {
-  //       // Otherwise render a message explaining we have no articles
-  //       renderEmpty();
-  //     }
-  //   });
-  // }
 
   function handleArticleClear() {
     $.get("clear").then(function() {
@@ -58,17 +46,23 @@ $(document).ready(function () {
     });
   }
 
+  function handleNoteDelete() {
+    // console.log("handle note delete method being fired.");
+    //figure out the id of the note to delete
+    var thisId = $(this).attr("data-id");
+    var articleId = $(this).attr("data-articleId");
+    // console.log("New method; time to delete the note of id: " + thisId);
+    $.get("deleteNote/" + thisId + "&" + articleId).then(function() {
+      articleContainer.empty();
+    }).then(function() {
+      initPage();
+    });
+  }
+
 });
 
-// Grab the articles as a json
+
 initPage();
-// $.getJSON("/articles", function (data) {
-//   // For each one
-//   for (var i = 0; i < data.length; i++) {
-//     // Display the apropos information on the page
-//     $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-//   }
-// });
 
 function initPage() {
   $.getJSON("/articles", function (data) {
@@ -93,7 +87,7 @@ function initPage() {
             "<p data-id='" + data[i].notes[j]._id + "'>" + data[i].notes[j].title + "<br />" + data[i].notes[j].body + "</p>" +
             "</div>" +
             "<div class='col col-md-4 button-box'>" +
-            "<a data-id='" + data[i].notes[j]._id + "' " + "class='btn btn-warning btn-sm delete-note'>Delete Note</a>" +
+            "<a data-id='" + data[i].notes[j]._id + "' data-articleId='" + data[i]._id + "' " + "class='btn btn-warning btn-sm delete-note'>Delete Note</a>" +
             "</div>" +
           "</div>"
         );

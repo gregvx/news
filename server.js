@@ -174,6 +174,25 @@ app.get("/deleteArticle/:id", function (req, res) {
   res.send("Clear Complete");
 });
 
+// Route for deleting one Note from the db
+app.get("/deleteNote/:id&:articleId", function (req, res) {
+  var noteId = req.params.id;
+  var articleId = req.params.articleId;
+  console.log("Time to delete the note of id:" + req.params.id + "and modifiy the record of article with id: " + req.params.articleId);
+  db.Note.deleteOne({_id: req.params.id})
+  .then(function(){
+    db.Article.findOneAndUpdate({_id: articleId}, {$pull: {notes: noteId}})
+    .catch(function(err) {
+      res.json(err);
+    });
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+  // Send a message to the client
+  res.send("Clear Complete");
+});
+
 // Start the server
 app.listen(process.env.PORT || PORT, function () {
   console.log("App running on port unknown but maybe:" + PORT + "!");
